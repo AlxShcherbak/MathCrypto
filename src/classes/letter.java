@@ -16,8 +16,21 @@ public class letter {
     private char let;
     private Integer num;
     private ArrayList<Integer> resnum;
+    private Integer result;
     private boolean not_zero;
 
+
+    public void setResnum(ArrayList<Integer> resnum) {
+        this.resnum = resnum;
+    }
+
+    public Integer getResult() {
+        return result;
+    }
+
+    public void setResult(Integer result) {
+        this.result = result;
+    }
 
     public letter() {
         this.resnum = new ArrayList<Integer>();
@@ -32,11 +45,13 @@ public class letter {
      * @param num - число від 0 до 9
      */
     public letter(char let, Integer num) {
+        this.resnum = new ArrayList<Integer>();
         this.let = let;
         this.num = num;
     }
 
     public letter(Integer num) {
+        this.resnum = new ArrayList<Integer>();
         this.num = num;
     }
 

@@ -2,10 +2,7 @@ package controllers;
 
 import classes.letter;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
 import java.util.ArrayList;
@@ -49,7 +46,10 @@ public class Controller {
         StringBuffer stringBuffer_task = new StringBuffer(task_textField.getText());
 
         //debug
-        if (debug) System.out.println("stringBuffer_task = " + stringBuffer_task);
+        if (debug) {
+            System.out.println("stringBuffer_task = " + stringBuffer_task);
+            //stringBuffer_task = new StringBuffer("A+FAT=ASS");
+        }
 
         //Розбір введеної строки на слова
         task_word = stringBuffer_task.toString().split("[^0-9a-zA-Zа-яА-Я]+");
@@ -84,26 +84,41 @@ public class Controller {
                     }
                 }
                 if (exist & (char_word == 0)) {
-                    letters.get(letters.size() - 1).setNum(1);
+                    letters.get(letters.size() - 1).setNum(0);
                 }
             }
         }
+        while (letters.get(0).getNum() < 10) {
+            //debug
+            if (debug) {
+                if ((letters.get(0).getNum() == 9) & (letters.get(1).getNum() == 8) & (letters.get(2).getNum() == 0) & (letters.get(3).getNum() == 10)) {
+                    System.out.println("lol");
+                }
+            }
+            generator();
+        }
 
-        /*MyThread thread = new MyThread();
-        thread.start();
-        try {
-            thread.join();
-            // действия после завершения работы потока
-        } catch (InterruptedException x) {
-        }*/
-
-        generator();
 
         //debug
         if (debug) {
             for (int i = 0; i < letters.size(); i++) {
                 System.out.print("letters" + i + " " + letters.get(i).getLet() + " = " + letters.get(i).getNum() + "  ");
             }
+        }
+
+        int vpos = 25,
+                hpos = 50;
+        ArrayList<Label> labels = new ArrayList<>();
+        for (int i = 0; i < letters.get(0).getResnum().size(); i++) {
+            for (int j = 0; j < letters.size(); j++) {
+                labels.add(new Label(letters.get(j).getLet() + " = " + letters.get(j).getResnum().get(i)));
+                labels.get(labels.size() - 1).setLayoutX(hpos);
+                labels.get(labels.size() - 1).setLayoutY(vpos);
+                hpos += 45;
+                bottom_anchor.getChildren().add(labels.get(labels.size() - 1));
+            }
+            vpos += 25;
+            hpos = 50;
         }
 
         processIndicator.setVisible(false);
@@ -168,17 +183,17 @@ public class Controller {
      */
     private int type(String symbol) {
         int type;
-        if (symbol.equals('+')) type = 0;
-        else if (symbol.equals('-')) type = 1;
-        else if (symbol.equals('*')) type = 2;
-        else if (symbol.equals('/')) type = 3;
-        else if (symbol.equals('=')) type = 4;
+        if (symbol.equals("+")) type = 0;
+        else if (symbol.equals("-")) type = 1;
+        else if (symbol.equals("*")) type = 2;
+        else if (symbol.equals("/")) type = 3;
+        else if (symbol.equals("=")) type = 4;
         else type = 5;
         return type;
     }
 
     /**
-     * @param let     - буква для асоціації
+     * @param let - буква для асоціації
      * @return число яке асоціюється з буквою
      */
     private Integer num(char let) {
@@ -217,24 +232,14 @@ public class Controller {
                     letters.get(i).addResnum(letters.get(i).getNum());
                 }
             }
-        } else {
-            letters.get(letters.size() - 1).numIncrement();
+        }
+        letters.get(letters.size() - 1).numIncrement();
 
-            //debug
-            if (debug) {
-                for (int i = 0; i < letters.size(); i++) {
-                    System.out.println("letters" + i + " " + letters.get(i).getLet() + " = " + letters.get(i).getNum() + "  ");
-                }
+        //debug
+        if (debug) {
+            for (int i = 0; i < letters.size(); i++) {
+                System.out.println("letters" + i + " " + letters.get(i).getLet() + " = " + letters.get(i).getNum() + "  ");
             }
-            if (letters.get(0).getNum() < 10)
-                generator();
-            // }
         }
     }
-
-  /*  class MyThread extends Thread {
-        public void run() {
-            generator();
-        }
-    }*/
 }
