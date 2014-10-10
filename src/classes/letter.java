@@ -1,7 +1,5 @@
 package classes;
 
-import com.sun.deploy.security.MozillaJSSDSASignature;
-
 import java.util.ArrayList;
 
 /**
@@ -18,24 +16,32 @@ public class letter {
     private char let;
     private Integer num;
     private ArrayList<Integer> resnum;
+    private boolean not_zero;
 
-    public letter(){
+
+    public letter() {
         this.resnum = new ArrayList<Integer>();
         this.num = new Integer(0);
         this.let = ' ';
+        this.not_zero = false;
+
     }
 
     /**
      * @param let - буква
      * @param num - число від 0 до 9
      */
-    public letter(char let,Integer num){
+    public letter(char let, Integer num) {
         this.let = let;
         this.num = num;
     }
 
-    public letter(Integer num){
+    public letter(Integer num) {
         this.num = num;
+    }
+
+    public void numIncrement () {
+        this.num++;
     }
 
     public char getLet() {
@@ -58,7 +64,16 @@ public class letter {
         return resnum;
     }
 
-    public void setResnum(ArrayList<Integer> resnum) {
-        this.resnum = resnum;
+    public void addResnum(Integer resnum) {
+        this.resnum.add(resnum);
+    }
+
+    public boolean isNot_zero() {
+        return not_zero;
+    }
+
+    public void setNot_zero(boolean not_zero) {
+        this.not_zero = not_zero;
     }
 }
+
