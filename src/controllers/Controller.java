@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Controller {
     //debug switcher
-    private boolean debug = true;
+    private boolean debug = false;
 
     /**
      * @param letters      - асоціативний масив
@@ -30,9 +30,12 @@ public class Controller {
     public ProgressIndicator processIndicator;
 
     public void close(ActionEvent actionEvent) {
+        System.exit(100);
     }
 
     public void clear(ActionEvent actionEvent) {
+        letters.clear();
+        bottom_anchor.getChildren().clear();
     }
 
     public void about(ActionEvent actionEvent) {
@@ -88,7 +91,7 @@ public class Controller {
                 }
             }
         }
-        while (letters.get(0).getNum() < 10) {
+        /*while (letters.get(0).getNum() < 10) {
             //debug
             if (debug) {
                 if ((letters.get(0).getNum() == 9) & (letters.get(1).getNum() == 8) & (letters.get(2).getNum() == 0) & (letters.get(3).getNum() == 10)) {
@@ -96,32 +99,39 @@ public class Controller {
                 }
             }
             generator();
-        }
-
-
-        //debug
-        if (debug) {
-            for (int i = 0; i < letters.size(); i++) {
-                System.out.print("letters" + i + " " + letters.get(i).getLet() + " = " + letters.get(i).getNum() + "  ");
+        }*/
+        MyThread thread = new MyThread();
+        thread.start();
+        try {
+            thread.join();
+            //debug
+            if (debug) {
+                for (int i = 0; i < letters.size(); i++) {
+                    System.out.print("letters" + i + " " + letters.get(i).getLet() + " = " + letters.get(i).getNum() + "  ");
+                }
             }
-        }
 
-        int vpos = 25,
+            int vpos = 25,
+                    hpos = 50;
+            ArrayList<Label> labels = new ArrayList<>();
+            for (int i = 0; i < letters.get(0).getResnum().size(); i++) {
+                for (int j = 0; j < letters.size(); j++) {
+                    labels.add(new Label(letters.get(j).getLet() + " = " + letters.get(j).getResnum().get(i)));
+                    labels.get(labels.size() - 1).setLayoutX(hpos);
+                    labels.get(labels.size() - 1).setLayoutY(vpos);
+                    hpos += 45;
+                    bottom_anchor.getChildren().add(labels.get(labels.size() - 1));
+                }
+                vpos += 25;
                 hpos = 50;
-        ArrayList<Label> labels = new ArrayList<>();
-        for (int i = 0; i < letters.get(0).getResnum().size(); i++) {
-            for (int j = 0; j < letters.size(); j++) {
-                labels.add(new Label(letters.get(j).getLet() + " = " + letters.get(j).getResnum().get(i)));
-                labels.get(labels.size() - 1).setLayoutX(hpos);
-                labels.get(labels.size() - 1).setLayoutY(vpos);
-                hpos += 45;
-                bottom_anchor.getChildren().add(labels.get(labels.size() - 1));
             }
-            vpos += 25;
-            hpos = 50;
-        }
 
-        processIndicator.setVisible(false);
+            //processIndicator.setVisible(false);
+            // действия после завершения работы потока
+        } catch (InterruptedException x) {}
+
+
+
         System.out.println("time=" + (System.currentTimeMillis() - timer));
     }
 
@@ -239,6 +249,21 @@ public class Controller {
         if (debug) {
             for (int i = 0; i < letters.size(); i++) {
                 System.out.println("letters" + i + " " + letters.get(i).getLet() + " = " + letters.get(i).getNum() + "  ");
+            }
+        }
+    }
+    class MyThread extends Thread {
+        public MyThread() {
+        }
+        public void run() {
+            while (letters.get(0).getNum() < 10) {
+                //debug
+                if (debug) {
+                    if ((letters.get(0).getNum() == 9) & (letters.get(1).getNum() == 8) & (letters.get(2).getNum() == 0) & (letters.get(3).getNum() == 10)) {
+                        System.out.println("lol");
+                    }
+                }
+                generator();
             }
         }
     }
