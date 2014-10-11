@@ -6,8 +6,13 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Controller {
+    // try this
+    ArrayList<Map<Character,Integer>> maps= new ArrayList<>();
+    //***end***********
+
     //debug switcher
     private boolean debug = false;
 
